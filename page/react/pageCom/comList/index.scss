@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 20px;
 
   .com-contain {
     display: flex;
@@ -11,6 +12,10 @@
     margin-top: 20px;
     width: 60%;
     justify-content: space-between;
+    .com-detail {
+      font-size: 15px;
+      color: black;
+    }
 
     .link-contain {
       a {

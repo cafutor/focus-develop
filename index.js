@@ -14,8 +14,21 @@ const comsMapFile = path.join(__dirname, 'comsMap.js');
 const comsMapStyleFile = path.join(__dirname, 'index.scss');
 const compiler = webpack(config);
 const http = require('http');
-let APPPORT = 9000;
+const configFile = 'focus.d.json';
+
 require('colors');
+
+let APPPORT = 9000;
+
+const configObj = (() => {
+  const configFileAbPath = path.join(process.cwd(), configFile);
+  if (fs.existsSync(configFileAbPath)) {
+    const fileString = fs.readFileSync(configFileAbPath).toString();
+    if (fileString && fileString.trim()) return JSON.parse(fileString);
+  };
+  return void 0;
+})();
+
 app.use(express.static(path.join(__dirname, 'dist')));
 
 // detect there is src folder
@@ -99,6 +112,16 @@ const matchComsMap = () => {
 
   });
   fs.writeFileSync(comsMapFile, comsImportString + `\n\nexport default {\n${comsMap}}`);
+  if (configObj && configObj.globalCss) {
+    if (typeof configObj.globalCss === 'string') {
+      comsStyleImportString = comsStyleImportString + `@import '~${configObj.globalCss}';\n`;
+    };
+    if (Object.prototype.toString.call(configObj.globalCss) === '[object Array]') {
+      configObj.globalCss.forEach((el) => {
+        comsStyleImportString += `@import "~${el}";\n`;
+      })
+    };
+  };
   fs.writeFileSync(comsMapStyleFile, comsStyleImportString);
 };
 
@@ -169,11 +192,15 @@ const devRun = async () => {
 devRun();
 
 app.get('/', (req, res) => {
-  const htmlStream = fs.createReadStream(path.join(__dirname, 'page/index.htm'));
-  res.header({
-    'Content-Type': 'text/html',
+  fs.readFile(path.join(__dirname, 'page/index.htm'), (err, result) => {
+    if (err) return res.end('some fatal error,please try restart your dev server');
+    const htmlStream = result.toString();
+    const cwdChunks = process.cwd().split('/');
+    res.header({
+      'Content-Type': 'text/html',
+    });
+    res.end(htmlStream.replace(/\$page_name/, cwdChunks[cwdChunks.length - 1]));
   });
-  htmlStream.pipe(res);
 });
 
 /***

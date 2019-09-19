@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const fs = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const entry = path.join(__dirname, '/page/react/index.view');
 process.traceDeprecation = true;
@@ -146,7 +147,7 @@ let webpackConObj = {
                             plugins: (loader) => [require('autoprefixer')],
                         }
                     },
-                    'sass-loader',
+                    'sass-loader'
                 ]
             },
         ]
