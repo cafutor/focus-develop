@@ -1,0 +1,16 @@
+import React from 'react';
+import ComList from './pageCom/comList/index.jsx';
+import Com from './pageCom/com/index.jsx';
+import './index.business';
+import './index.scss';
+
+<View modelFromServerKey="model" customModel="./index.model" root="root">
+    <Scope>
+        <Router>
+            <Switch>
+                <ComList exact path="/" id='myTodoListRute' />
+                <Com exact path="/:comName" id='comDisplay' />
+            </Switch>
+        </Router>
+    </Scope>
+</View>
