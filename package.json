@@ -1,6 +1,6 @@
 {
   "name": "focus-develop",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "a package that used for developing your component",
   "bin": {
     "focusd": "./bin/focusd"
