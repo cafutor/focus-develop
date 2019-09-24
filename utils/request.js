@@ -60,7 +60,9 @@ module.exports = {
             };
             if (!fs.existsSync(path.join(nodeModulesPath, dependency))) {
                 console.log('downloading some dev dependencies'.yellow);
-                childProcess.execSync(`npm install ${dependency}@16.9.0 --save-dev`);
+                childProcess.execSync(`npm install ${dependency}@16.9.0 --save-dev`, {
+                    stdio: ['ignore', 'ignore', 'ignore'],
+                });
                 console.log('downloading some dev dependencies success'.yellow);
             }
         })
