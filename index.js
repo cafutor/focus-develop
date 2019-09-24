@@ -14,7 +14,11 @@ const comsMapFile = path.join(__dirname, 'comsMap.js');
 const comsMapStyleFile = path.join(__dirname, 'index.scss');
 const compiler = webpack(config);
 const http = require('http');
+const { requestMockUrl } = require('./utils/request');
 const configFile = 'focus.d.json';
+
+// create request api
+requestMockUrl(app);
 
 require('colors');
 
@@ -125,13 +129,20 @@ const matchComsMap = () => {
   fs.writeFileSync(comsMapStyleFile, comsStyleImportString);
 };
 
-// subscribe to cwd lib
+// subscribe to cwd src
 const subscribeLib = () => {
   fs.watch(comsLibFile, {
     recursive: true,
   }, (eventType, fileName) => {
-    matchComsMap();
-  })
+    if (`/${fileName}`.match(/(\/([a-zA-Z0-9]+)){2}(\/(([a-zA-Z-0-9]+).json)){1}/)) {
+      if (eventType !== 'change') {
+        console.warn('request api has changed,focus-develop will add  or delete the new route'.yellow);
+      };
+      requestMockUrl(app);
+    } else {
+      matchComsMap();
+    }
+  });
 };
 
 const devRun = async () => {
