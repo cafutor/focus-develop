@@ -14,11 +14,12 @@ const comsMapFile = path.join(__dirname, 'comsMap.js');
 const comsMapStyleFile = path.join(__dirname, 'index.scss');
 const compiler = webpack(config);
 const http = require('http');
-const { requestMockUrl } = require('./utils/request');
+const { requestMockUrl, downloadDevDepencies } = require('./utils/request');
 const configFile = 'focus.d.json';
 
 // create request api
 requestMockUrl(app);
+downloadDevDepencies();
 
 require('colors');
 

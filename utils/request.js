@@ -2,7 +2,11 @@ const path = require('path');
 const fs = require('fs');
 const cwd = process.cwd();
 const srcPath = path.join(cwd, 'src');
+const nodeModulesPath = path.join(cwd, 'node_modules');
 const methodSets = ['get', 'post', 'delete'];
+const dependencies = ['@hot-loader/react-dom'];
+const childProcess = require('child_process');
+require('colors');
 
 module.exports = {
     requestMockUrl: (app) => {
@@ -47,5 +51,18 @@ module.exports = {
                 }
             })
         }
-    }
+    },
+    // download some dependencies
+    downloadDevDepencies: () => {
+        dependencies.forEach((dependency) => {
+            if (!fs.existsSync(nodeModulesPath)) {
+                fs.mkdirSync(nodeModulesPath);
+            };
+            if (!fs.existsSync(path.join(nodeModulesPath, dependency))) {
+                console.log('downloading some dev dependencies'.yellow);
+                childProcess.execSync(`npm install ${dependency}@16.9.0 --save-dev`);
+                console.log('downloading some dev dependencies success'.yellow);
+            }
+        })
+    },
 }
