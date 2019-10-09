@@ -57,8 +57,11 @@ that would cause some fatal error.but usually,a ui framework would give a global
 eg:antd/dist/antd.min.css
 
 ### support mock request 
-in your component folder,you give it a request folder,just like this
-![mock-request](https://s2.ax1x.com/2019/10/09/u4FnsI.png)
+in your component folder,you can give it a request folder,just like this.
+
+<img src="https://s2.ax1x.com/2019/10/09/u4FnsI.png" width="260" />
+<br/>
+
 focus-develop will create some routes
 eg:
 ```javascript
